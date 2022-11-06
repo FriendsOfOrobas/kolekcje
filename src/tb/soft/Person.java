@@ -1,11 +1,6 @@
 package tb.soft;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 
 /*
@@ -37,7 +32,7 @@ enum PersonJob {
 
 	String jobName;
 
-	private PersonJob(String job_name) {
+	PersonJob(String job_name) {
 		jobName = job_name;
 	}
 
@@ -79,12 +74,12 @@ class PersonException extends Exception {
  * niedozwolonej wartości, któremuś z atrybutów jest zgłaszany wyjątek
  * zawierający stosowny komunikat.
  */
-public class Person {
+public class Person implements Comparable {
 	
-	private String firstName;
-	private String lastName;
-	private int birthYear;
-	private PersonJob job;
+	protected String firstName;
+	protected String lastName;
+	protected int birthYear;
+	protected PersonJob job;
  
 	
 	public Person(String first_name, String last_name) throws PersonException {
@@ -167,13 +162,28 @@ public class Person {
 		throw new PersonException("Nie ma takiego stanowiska.");
 	}
 
-	
+
 	@Override
 	public String toString() {  
 		return firstName + " " + lastName;
 	}
-	
-	
+
+	@Override
+	public int compareTo(Object o) {
+		if (equals(o)) return 0;
+		Person person = (Person) o;
+		if (!getLastName().equals(person.getLastName())) return getLastName().compareTo(person.getLastName());
+		else {
+			if (!getFirstName().equals(person.getFirstName())) return getFirstName().compareTo(person.getFirstName());
+			else {
+				if(getBirthYear()<person.getBirthYear()) return -1;
+				else if(getBirthYear()> person.getBirthYear()) return 1;
+				else return getJob().toString().compareTo(person.getJob().toString());
+			}
+		}
+	}
+
+
 	public static void printToFile(PrintWriter writer, Person person){
 		writer.println(person.firstName + "#" + person.lastName + 
 				"#" + person.birthYear + "#" + person.job);
@@ -204,7 +214,7 @@ public class Person {
 	
 	
 	public static Person readFromFile(String file_name) throws PersonException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(new File(file_name)))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file_name))) {
 			return Person.readFromFile(reader);
 		} catch (FileNotFoundException e){
 			throw new PersonException("Nie odnaleziono pliku " + file_name);
@@ -212,5 +222,7 @@ public class Person {
 			throw new PersonException("Wystąpił błąd podczas odczytu danych z pliku.");
 		}	
 	}
-	
+
+
+
 }  // koniec klasy Person

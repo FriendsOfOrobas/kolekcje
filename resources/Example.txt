@@ -1,0 +1,8 @@
+Stefan#Kruk#1964#Student
+Malakiasz#Kuc#2000#Kierownik
+Fausta#Kruk#1939#Dyrektor
+Alojzy#Kruk#1977#Kierownik
+Stefan#Kruk#1964#Nauczyciel
+Malakiasz#Kuc#2000#Kierownik
+Eurydyka#Krajanka#2012#Gość
+Jacek#Soplica#1999#-------
